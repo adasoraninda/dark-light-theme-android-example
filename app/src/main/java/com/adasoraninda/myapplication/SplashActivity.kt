@@ -37,9 +37,6 @@ class SplashActivity : AppCompatActivity() {
 
         appViewModel.getThemeSettings().observe(this, { state ->
             Log.d("Splash", "$state")
-            if (state == null) {
-                return@observe
-            }
 
             val mode = if (state) AppCompatDelegate.MODE_NIGHT_YES
             else AppCompatDelegate.MODE_NIGHT_NO
