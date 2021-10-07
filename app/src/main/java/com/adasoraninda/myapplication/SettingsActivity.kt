@@ -29,11 +29,10 @@ class SettingsActivity : AppCompatActivity() {
                 return@observe
             }
 
-            if (state) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            }
+            val mode = if (state) AppCompatDelegate.MODE_NIGHT_YES
+            else AppCompatDelegate.MODE_NIGHT_NO
+
+            AppCompatDelegate.setDefaultNightMode(mode)
 
             switchTheme.isChecked = state
             appViewModel.doneSetTheme()

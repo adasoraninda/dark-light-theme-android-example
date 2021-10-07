@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.ViewPropertyAnimator
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -27,16 +26,15 @@ class SplashActivity : AppCompatActivity() {
         text.alpha = 0f
 
         appViewModel.themeState.observe(this, { state ->
-            Log.d("Main", "$state")
+            Log.d("Splash", "$state")
             if (state == null) {
                 return@observe
             }
 
-            if (state) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            }
+            val mode = if (state) AppCompatDelegate.MODE_NIGHT_YES
+            else AppCompatDelegate.MODE_NIGHT_NO
+
+            AppCompatDelegate.setDefaultNightMode(mode)
 
             text.animate().setDuration(2_000L).alpha(1f).withEndAction {
                 Intent(this, MainActivity::class.java).apply {
