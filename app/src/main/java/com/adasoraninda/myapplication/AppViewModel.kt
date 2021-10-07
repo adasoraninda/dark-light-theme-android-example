@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class MainViewModel(private val pref: SettingPreferences) : ViewModel() {
+class AppViewModel(private val pref: SettingPreferences) : ViewModel() {
     private val _themeState = MutableLiveData<Boolean?>()
     val themeState: LiveData<Boolean?> get() = _themeState
 

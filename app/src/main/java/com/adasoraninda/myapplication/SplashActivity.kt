@@ -1,30 +1,33 @@
 package com.adasoraninda.myapplication
 
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.ViewPropertyAnimator
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.switchmaterial.SwitchMaterial
 
-class SettingsActivity : AppCompatActivity() {
+@SuppressLint("CustomSplashScreen")
+class SplashActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
+        setContentView(R.layout.activity_splash)
 
-        val switchTheme = findViewById<SwitchMaterial>(R.id.switch_theme)
+        val text = findViewById<TextView>(R.id.text_splash)
 
         val pref = SettingPreferences.getInstance(dataStore)
         val appViewModel = ViewModelProvider(this, ViewModelFactory(pref)).get(
             AppViewModel::class.java
         )
 
-        switchTheme.setOnCheckedChangeListener { _, isChecked ->
-            appViewModel.saveThemeSettings(isChecked)
-        }
+        text.alpha = 0f
 
         appViewModel.themeState.observe(this, { state ->
-            Log.d("Settings", "$state")
+            Log.d("Main", "$state")
             if (state == null) {
                 return@observe
             }
@@ -35,10 +38,14 @@ class SettingsActivity : AppCompatActivity() {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             }
 
-            switchTheme.isChecked = state
-            appViewModel.doneSetTheme()
-        })
+            text.animate().setDuration(2_000L).alpha(1f).withEndAction {
+                Intent(this, MainActivity::class.java).apply {
+                    startActivity(this)
+                    finish()
+                }
 
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                appViewModel.doneSetTheme()
+            }
+        })
     }
 }
