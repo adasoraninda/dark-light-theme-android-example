@@ -16,7 +16,7 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-
+        supportActionBar?.hide()
         val text = findViewById<TextView>(R.id.text_splash)
 
         val pref = SettingPreferences.getInstance(dataStore)
