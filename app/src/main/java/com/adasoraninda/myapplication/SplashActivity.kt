@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.ViewPropertyAnimator
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -11,6 +12,8 @@ import androidx.lifecycle.ViewModelProvider
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
+
+    private var propertyAnim: ViewPropertyAnimator? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,7 +28,14 @@ class SplashActivity : AppCompatActivity() {
 
         text.alpha = 0f
 
-        appViewModel.themeState.observe(this, { state ->
+        propertyAnim = text.animate().setDuration(2_000L).alpha(1f).withEndAction {
+            Intent(this, MainActivity::class.java).apply {
+                startActivity(this)
+                finish()
+            }
+        }
+
+        appViewModel.getThemeSettings().observe(this, { state ->
             Log.d("Splash", "$state")
             if (state == null) {
                 return@observe
@@ -36,14 +46,12 @@ class SplashActivity : AppCompatActivity() {
 
             AppCompatDelegate.setDefaultNightMode(mode)
 
-            text.animate().setDuration(2_000L).alpha(1f).withEndAction {
-                Intent(this, MainActivity::class.java).apply {
-                    startActivity(this)
-                    finish()
-                }
-
-                appViewModel.doneSetTheme()
-            }
+            propertyAnim?.start()
         })
+    }
+
+    override fun onDestroy() {
+        propertyAnim?.cancel()
+        super.onDestroy()
     }
 }

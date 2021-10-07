@@ -21,8 +21,7 @@
         <activity
             android:name=".SettingsActivity"
             android:parentActivityName=".MainActivity" />
-        <activity
-            android:name=".MainActivity" />
+        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>

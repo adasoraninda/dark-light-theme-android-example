@@ -23,7 +23,7 @@ class SettingsActivity : AppCompatActivity() {
             appViewModel.saveThemeSettings(isChecked)
         }
 
-        appViewModel.themeState.observe(this, { state ->
+        appViewModel.getThemeSettings().observe(this, { state ->
             Log.d("Settings", "$state")
             if (state == null) {
                 return@observe
@@ -35,7 +35,6 @@ class SettingsActivity : AppCompatActivity() {
             AppCompatDelegate.setDefaultNightMode(mode)
 
             switchTheme.isChecked = state
-            appViewModel.doneSetTheme()
         })
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)

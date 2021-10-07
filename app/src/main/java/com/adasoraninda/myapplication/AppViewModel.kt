@@ -1,26 +1,15 @@
 package com.adasoraninda.myapplication
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class AppViewModel(private val pref: SettingPreferences) : ViewModel() {
-    private val _themeState = MutableLiveData<Boolean?>()
-    val themeState: LiveData<Boolean?> get() = _themeState
 
-    init {
-        getThemeSettings()
-    }
-
-    private fun getThemeSettings() {
-        viewModelScope.launch {
-            pref.getThemeSetting().collect { value ->
-                _themeState.value = value
-            }
-        }
+    fun getThemeSettings(): LiveData<Boolean> {
+        return pref.getThemeSetting().asLiveData()
     }
 
     fun saveThemeSettings(isDarkModeActive: Boolean) {
@@ -29,7 +18,4 @@ class AppViewModel(private val pref: SettingPreferences) : ViewModel() {
         }
     }
 
-    fun doneSetTheme() {
-        _themeState.value = null
-    }
 }
